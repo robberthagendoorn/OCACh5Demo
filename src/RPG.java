@@ -46,7 +46,7 @@ public class RPG {
 	}
 
 	private static boolean encounterMonster() {
-		Monster monster = getMonster();
+		Monster monster = Monster.getMonster(depth);
 		boolean keepGoing = true;
 		System.out.println("\nYou have encountered a " + monster.getName());
 		while (keepGoing) {
@@ -62,18 +62,6 @@ public class RPG {
 		return true;
 	}
 	
-	private static Monster getMonster() {
-		switch (depth) {
-			case 1:
-				return new Goblin();
-			case 2:
-				return new Bear();
-			case 3:
-				return new Dragon();
-		}
-		return new Monster();
-	}	
-
 private static String getAttackOption(Monster monster) {
 		
 		System.out.println("\nHealth: " + monster.getHealth());
@@ -90,7 +78,7 @@ private static String getAttackOption(Monster monster) {
 				keepGoing = (monster.getHealth() > 0) ? true : false;
 				break;
 			case "2":
-				useItem();
+				hero.useItem();
 				break;
 			case "3":
 				System.out.println("You have escaped");
@@ -117,15 +105,6 @@ private static String getAttackOption(Monster monster) {
 		}
 	}
 
-	private static void useItem() {
-		if (hero.getNumPotions() > 0) {
-			hero.setNumPotions(hero.getNumPotions() - 1);
-			hero.setHealth(10);
-			return;
-		}
-		System.out.println("\nYou do not have anymore potions");
-	}
-	
 	private static void visitShop() {
 		depth = 0;
 		boolean keepGoing = true;
@@ -168,19 +147,7 @@ private static String getAttackOption(Monster monster) {
 		} else {
 			System.out.println("\nYou have bought a " + item.getName());		
 			hero.setGold(hero.getGold() - item.getCost());
-			upgradeHero(item);
-		}
-	}
-
-	private static void upgradeHero(Item item) {
-		if (item instanceof Weapon) {
-			Weapon weapon = (Weapon)item;
-			hero.setWeapon(weapon);
-		} else if (item instanceof Armor) {
-			Armor armor = (Armor)item;
-			hero.setArmor(armor);
-		} else {
-			hero.setNumPotions(hero.getNumPotions() + 1);
+			hero.upgradeHero(item);
 		}
 	}
 }

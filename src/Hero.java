@@ -40,5 +40,26 @@ public class Hero extends Creature {
 	public void setNumPotions(int np) {
 		numPotions = np;
 	}
+
+	public void useItem() {
+		if (getNumPotions() > 0) {
+			setNumPotions(getNumPotions() - 1);
+			setHealth(10);
+			return;
+		}
+		System.out.println("\nYou do not have anymore potions");
+	}
+
+	public void upgradeHero(Item item) {
+		if (item instanceof Weapon) {
+			Weapon weapon = (Weapon)item;
+			setWeapon(weapon);
+		} else if (item instanceof Armor) {
+			Armor armor = (Armor)item;
+			setArmor(armor);
+		} else {
+			setNumPotions(getNumPotions() + 1);
+		}
+	}
 }
 
